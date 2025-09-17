@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ContextWithStats, ContextFilters } from '../types/context.types';
 import { useAlgorand } from '../hooks/useAlgorand';
 import MarketplaceGrid from '../components/marketplace/MarketplaceGrid';
@@ -66,19 +66,23 @@ const MarketplaceUnified: React.FC = () => {
 
   // Load all contexts for browsing
   const fetchAllContexts = useCallback(async (
-    query: string = '',
-    currentFilters: ContextFilters = {},
+    query?: string,
+    currentFilters?: ContextFilters,
     append: boolean = false
   ) => {
     setBrowseLoading(true);
+    
+    // Use provided params or fall back to current state
+    const searchQuery = query !== undefined ? query : browseSearchQuery;
+    const filters = currentFilters !== undefined ? currentFilters : browseFilters;
     
     try {
       const contexts = await loadAllContextsFromBlockchain();
       let filteredContexts = [...contexts];
       
       // Apply search and filters
-      if (query.trim()) {
-        const searchLower = query.toLowerCase();
+      if (searchQuery.trim()) {
+        const searchLower = searchQuery.toLowerCase();
         filteredContexts = filteredContexts.filter(context =>
           context.metadata.title.toLowerCase().includes(searchLower) ||
           context.metadata.description.toLowerCase().includes(searchLower) ||
@@ -87,17 +91,17 @@ const MarketplaceUnified: React.FC = () => {
       }
       
       // Apply filters (category, price range, etc.)
-      if (currentFilters.category !== undefined) {
+      if (filters.category !== undefined) {
         filteredContexts = filteredContexts.filter(context => 
-          context.metadata.category === currentFilters.category
+          context.metadata.category === filters.category
         );
       }
       
-      if (currentFilters.priceRange) {
+      if (filters.priceRange) {
         filteredContexts = filteredContexts.filter(context => {
           const price = context.licensing.price || 0;
-          return price >= (currentFilters.priceRange!.min || 0) && 
-                 price <= (currentFilters.priceRange!.max || Infinity);
+          return price >= (filters.priceRange!.min || 0) && 
+                 price <= (filters.priceRange!.max || Infinity);
         });
       }
       
@@ -108,7 +112,7 @@ const MarketplaceUnified: React.FC = () => {
         );
       }
       
-      setAllContexts(append ? [...allContexts, ...filteredContexts] : filteredContexts);
+      setAllContexts(prev => append ? [...prev, ...filteredContexts] : filteredContexts);
       setBrowseHasMore(filteredContexts.length >= 20); // Assume 20 per page
       
     } catch (error) {
@@ -116,25 +120,29 @@ const MarketplaceUnified: React.FC = () => {
     } finally {
       setBrowseLoading(false);
     }
-  }, [allContexts, account]);
+  }, [account]);
 
   // Load user's contexts for selling
   const fetchUserContexts = useCallback(async (
-    query: string = '',
-    currentFilters: ContextFilters = {},
+    query?: string,
+    currentFilters?: ContextFilters,
     append: boolean = false
   ) => {
     if (!account?.address) return;
     
     setSellLoading(true);
     
+    // Use provided params or fall back to current state
+    const searchQuery = query !== undefined ? query : sellSearchQuery;
+    const filters = currentFilters !== undefined ? currentFilters : sellFilters;
+    
     try {
       const contexts = await loadUserContextsFromBlockchain(account.address);
       let filteredContexts = [...contexts];
       
       // Apply search and filters
-      if (query.trim()) {
-        const searchLower = query.toLowerCase();
+      if (searchQuery.trim()) {
+        const searchLower = searchQuery.toLowerCase();
         filteredContexts = filteredContexts.filter(context =>
           context.metadata.title.toLowerCase().includes(searchLower) ||
           context.metadata.description.toLowerCase().includes(searchLower) ||
@@ -142,7 +150,7 @@ const MarketplaceUnified: React.FC = () => {
         );
       }
       
-      setUserContexts(append ? [...userContexts, ...filteredContexts] : filteredContexts);
+      setUserContexts(prev => append ? [...prev, ...filteredContexts] : filteredContexts);
       setSellHasMore(filteredContexts.length >= 20);
       
       // Calculate seller stats
@@ -159,16 +167,91 @@ const MarketplaceUnified: React.FC = () => {
     } finally {
       setSellLoading(false);
     }
-  }, [userContexts, account]);
+  }, [account]);
 
-  // Load data when section changes
+  // Load data when section changes - removed callbacks from dependencies to prevent infinite loop
   useEffect(() => {
     if (activeSection === 'browse') {
-      fetchAllContexts(browseSearchQuery, browseFilters);
+      // Load browse data directly
+      (async () => {
+        setBrowseLoading(true);
+        try {
+          const contexts = await loadAllContextsFromBlockchain();
+          let filteredContexts = [...contexts];
+          
+          if (browseSearchQuery.trim()) {
+            const searchLower = browseSearchQuery.toLowerCase();
+            filteredContexts = filteredContexts.filter(context =>
+              context.metadata.title.toLowerCase().includes(searchLower) ||
+              context.metadata.description.toLowerCase().includes(searchLower) ||
+              context.metadata.tags.some(tag => tag.toLowerCase().includes(searchLower))
+            );
+          }
+          
+          if (browseFilters.category !== undefined) {
+            filteredContexts = filteredContexts.filter(context => 
+              context.metadata.category === browseFilters.category
+            );
+          }
+          
+          if (browseFilters.priceRange) {
+            filteredContexts = filteredContexts.filter(context => {
+              const price = context.licensing.price || 0;
+              return price >= (browseFilters.priceRange!.min || 0) && 
+                     price <= (browseFilters.priceRange!.max || Infinity);
+            });
+          }
+          
+          if (account?.address) {
+            filteredContexts = filteredContexts.filter(context => 
+              context.creatorAddress !== account.address
+            );
+          }
+          
+          setAllContexts(filteredContexts);
+          setBrowseHasMore(filteredContexts.length >= 20);
+        } catch (error) {
+          console.error('Failed to load contexts:', error);
+        } finally {
+          setBrowseLoading(false);
+        }
+      })();
     } else if (activeSection === 'sell' && account?.address) {
-      fetchUserContexts(sellSearchQuery, sellFilters);
+      // Load sell data directly
+      (async () => {
+        setSellLoading(true);
+        try {
+          const contexts = await loadUserContextsFromBlockchain(account.address);
+          let filteredContexts = [...contexts];
+          
+          if (sellSearchQuery.trim()) {
+            const searchLower = sellSearchQuery.toLowerCase();
+            filteredContexts = filteredContexts.filter(context =>
+              context.metadata.title.toLowerCase().includes(searchLower) ||
+              context.metadata.description.toLowerCase().includes(searchLower) ||
+              context.metadata.tags.some(tag => tag.toLowerCase().includes(searchLower))
+            );
+          }
+          
+          setUserContexts(filteredContexts);
+          setSellHasMore(filteredContexts.length >= 20);
+          
+          const stats = {
+            totalEarnings: contexts.reduce((sum, ctx) => sum + ((ctx.stats as any)?.totalEarnings || 0), 0),
+            totalSales: contexts.reduce((sum, ctx) => sum + ((ctx.stats as any)?.purchases || 0), 0),
+            totalViews: contexts.reduce((sum, ctx) => sum + ((ctx.stats as any)?.views || 0), 0),
+            activeListings: contexts.length
+          };
+          setSellerStats(stats);
+        } catch (error) {
+          console.error('Failed to load user contexts:', error);
+        } finally {
+          setSellLoading(false);
+        }
+      })();
     }
-  }, [activeSection, account]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSection]); // Only depend on section change to avoid infinite loops
 
   // Handle search for browse section
   const handleBrowseSearch = (query: string) => {

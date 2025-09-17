@@ -308,8 +308,29 @@ class IPFSServiceImpl implements IPFSService {
   }
 }
 
-// Export singleton instance
-export const ipfsService: IPFSService = new IPFSServiceImpl();
+// Import mock service for fallback
+import mockIPFSService from './ipfs.service.mock';
+
+// Check if Pinata credentials are configured
+const isPinataConfigured = () => {
+  return PINATA_API_KEY && 
+         PINATA_API_KEY !== 'your_pinata_api_key' && 
+         PINATA_SECRET_KEY && 
+         PINATA_SECRET_KEY !== 'your_pinata_secret_key';
+};
+
+// Export appropriate service based on configuration
+export const ipfsService = isPinataConfigured() 
+  ? new IPFSServiceImpl() 
+  : mockIPFSService;
+
+// Log which service is being used
+if (!isPinataConfigured()) {
+  console.warn('⚠️ Pinata API keys not configured. Using mock IPFS service for development.');
+  console.log('To use real IPFS, configure VITE_PINATA_API_KEY and VITE_PINATA_SECRET_KEY in .env.local');
+}
+
+export default ipfsService;
 
 // Export for testing
 export { IPFSServiceImpl };

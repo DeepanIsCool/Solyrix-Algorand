@@ -32,7 +32,7 @@ import {
 const CreateContext: React.FC = () => {
   const navigate = useNavigate();
   const { account, createContext, isLoading: algorandLoading } = useAlgorand();
-  const { uploadFile, isLoading: ipfsLoading } = useIPFS();
+  const { uploadFile, uploadToIPFS, isLoading: ipfsLoading } = useIPFS();
 
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -180,7 +180,7 @@ const CreateContext: React.FC = () => {
       }
 
       // Upload to IPFS
-      const ipfsHash = await uploadFile(contentToUpload);
+      const ipfsHash = await uploadToIPFS(contentToUpload);
 
       // Prepare metadata with current timestamp
       const finalMetadata: AIContextMetadata = {
