@@ -1,0 +1,461 @@
+{
+  "version": 3,
+  "sources": [
+    "../../governance_token/contract.py"
+  ],
+  "mappings": ";;;;AAIA;;AAAA;;;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;;;;;AAAA;;;AAkCK;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;;AALA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;;AALA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;;AAVA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;;AAXA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;;AAHL;;AAAA;;;;;;;;",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "algopy.arc4.ARC4Contract.approval_program",
+      "params": {},
+      "block": "main",
+      "stack_in": [],
+      "op": "intcblock 1"
+    },
+    "4": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "6": {
+      "op": "bz main_bare_routing@10",
+      "stack_out": []
+    },
+    "9": {
+      "op": "pushbytess 0xbdfbdeb5 0x8b6bcedc 0xd8dc5a6f 0x46909355 0x45e11c8c // method \"create_proposal(string,string)string\", method \"vote_on_proposal(string,uint64)string\", method \"get_proposal_votes(string)uint64\", method \"get_total_supply()uint64\", method \"get_min_proposal_tokens()uint64\"",
+      "defined_out": [
+        "Method(create_proposal(string,string)string)",
+        "Method(get_min_proposal_tokens()uint64)",
+        "Method(get_proposal_votes(string)uint64)",
+        "Method(get_total_supply()uint64)",
+        "Method(vote_on_proposal(string,uint64)string)"
+      ],
+      "stack_out": [
+        "Method(create_proposal(string,string)string)",
+        "Method(vote_on_proposal(string,uint64)string)",
+        "Method(get_proposal_votes(string)uint64)",
+        "Method(get_total_supply()uint64)",
+        "Method(get_min_proposal_tokens()uint64)"
+      ]
+    },
+    "36": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(create_proposal(string,string)string)",
+        "Method(get_min_proposal_tokens()uint64)",
+        "Method(get_proposal_votes(string)uint64)",
+        "Method(get_total_supply()uint64)",
+        "Method(vote_on_proposal(string,uint64)string)",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "Method(create_proposal(string,string)string)",
+        "Method(vote_on_proposal(string,uint64)string)",
+        "Method(get_proposal_votes(string)uint64)",
+        "Method(get_total_supply()uint64)",
+        "Method(get_min_proposal_tokens()uint64)",
+        "tmp%2#0"
+      ]
+    },
+    "39": {
+      "op": "match main_create_proposal_route@3 main_vote_on_proposal_route@4 main_get_proposal_votes_route@5 main_get_total_supply_route@6 main_get_min_proposal_tokens_route@7",
+      "stack_out": []
+    },
+    "51": {
+      "block": "main_after_if_else@14",
+      "stack_in": [],
+      "op": "pushint 0 // 0",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "53": {
+      "op": "return",
+      "stack_out": []
+    },
+    "54": {
+      "block": "main_get_min_proposal_tokens_route@7",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%30#0"
+      ],
+      "stack_out": [
+        "tmp%30#0"
+      ]
+    },
+    "56": {
+      "op": "!",
+      "defined_out": [
+        "tmp%31#0"
+      ],
+      "stack_out": [
+        "tmp%31#0"
+      ]
+    },
+    "57": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "58": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%32#0"
+      ],
+      "stack_out": [
+        "tmp%32#0"
+      ]
+    },
+    "60": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "61": {
+      "op": "pushbytes 0x151f7c750000000000002710",
+      "defined_out": [
+        "0x151f7c750000000000002710"
+      ],
+      "stack_out": [
+        "0x151f7c750000000000002710"
+      ]
+    },
+    "75": {
+      "op": "log",
+      "stack_out": []
+    },
+    "76": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "77": {
+      "op": "return",
+      "stack_out": []
+    },
+    "78": {
+      "block": "main_get_total_supply_route@6",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%25#0"
+      ],
+      "stack_out": [
+        "tmp%25#0"
+      ]
+    },
+    "80": {
+      "op": "!",
+      "defined_out": [
+        "tmp%26#0"
+      ],
+      "stack_out": [
+        "tmp%26#0"
+      ]
+    },
+    "81": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "82": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%27#0"
+      ],
+      "stack_out": [
+        "tmp%27#0"
+      ]
+    },
+    "84": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "85": {
+      "op": "pushbytes 0x151f7c75000000003b9aca00",
+      "defined_out": [
+        "0x151f7c75000000003b9aca00"
+      ],
+      "stack_out": [
+        "0x151f7c75000000003b9aca00"
+      ]
+    },
+    "99": {
+      "op": "log",
+      "stack_out": []
+    },
+    "100": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "101": {
+      "op": "return",
+      "stack_out": []
+    },
+    "102": {
+      "block": "main_get_proposal_votes_route@5",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "tmp%19#0"
+      ]
+    },
+    "104": {
+      "op": "!",
+      "defined_out": [
+        "tmp%20#0"
+      ],
+      "stack_out": [
+        "tmp%20#0"
+      ]
+    },
+    "105": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "106": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%21#0"
+      ],
+      "stack_out": [
+        "tmp%21#0"
+      ]
+    },
+    "108": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "109": {
+      "op": "pushbytes 0x151f7c7500000000000003e8",
+      "defined_out": [
+        "0x151f7c7500000000000003e8"
+      ],
+      "stack_out": [
+        "0x151f7c7500000000000003e8"
+      ]
+    },
+    "123": {
+      "op": "log",
+      "stack_out": []
+    },
+    "124": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "125": {
+      "op": "return",
+      "stack_out": []
+    },
+    "126": {
+      "block": "main_vote_on_proposal_route@4",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "128": {
+      "op": "!",
+      "defined_out": [
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "tmp%12#0"
+      ]
+    },
+    "129": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "130": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "tmp%13#0"
+      ]
+    },
+    "132": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "133": {
+      "op": "pushbytes 0x151f7c75000d766f74655f7265636f72646564",
+      "defined_out": [
+        "0x151f7c75000d766f74655f7265636f72646564"
+      ],
+      "stack_out": [
+        "0x151f7c75000d766f74655f7265636f72646564"
+      ]
+    },
+    "154": {
+      "op": "log",
+      "stack_out": []
+    },
+    "155": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "156": {
+      "op": "return",
+      "stack_out": []
+    },
+    "157": {
+      "block": "main_create_proposal_route@3",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "159": {
+      "op": "!",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "160": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "161": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "tmp%5#0"
+      ]
+    },
+    "163": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "164": {
+      "op": "pushbytes 0x151f7c75000c70726f705f63726561746564",
+      "defined_out": [
+        "0x151f7c75000c70726f705f63726561746564"
+      ],
+      "stack_out": [
+        "0x151f7c75000c70726f705f63726561746564"
+      ]
+    },
+    "184": {
+      "op": "log",
+      "stack_out": []
+    },
+    "185": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "186": {
+      "op": "return",
+      "stack_out": []
+    },
+    "187": {
+      "block": "main_bare_routing@10",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%35#0"
+      ],
+      "stack_out": [
+        "tmp%35#0"
+      ]
+    },
+    "189": {
+      "op": "bnz main_after_if_else@14",
+      "stack_out": []
+    },
+    "192": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%36#0"
+      ],
+      "stack_out": [
+        "tmp%36#0"
+      ]
+    },
+    "194": {
+      "op": "!",
+      "defined_out": [
+        "tmp%37#0"
+      ],
+      "stack_out": [
+        "tmp%37#0"
+      ]
+    },
+    "195": {
+      "error": "can only call when creating",
+      "op": "assert // can only call when creating",
+      "stack_out": []
+    },
+    "196": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "197": {
+      "op": "return",
+      "stack_out": []
+    }
+  }
+}

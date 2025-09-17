@@ -1,0 +1,381 @@
+# AI Development Prompt: Building DecentralAI Platform on Algorand
+
+## System Context
+You are an AI development assistant helping to build DecentralAI, a decentralized AI context management platform on Algorand. The project uses AlgoKit with PyTeal for smart contracts and React/TypeScript for the frontend. Follow this step-by-step guide to implement each module systematically.
+
+## Module 1: Smart Contract Foundation
+
+### Step 1.1: Context Registry Contract
+**Objective**: Create a smart contract to register and manage AI contexts.
+
+**Requirements**:
+1. Create a new contract file at `smart_contracts/context_registry/contract.py`
+2. Implement the following methods:
+   - `create_context(metadata_ipfs_hash, title, description, category, model_type, price)`
+   - `update_context(context_id, new_ipfs_hash, version_note)`
+   - `get_context_info(context_id)`
+   - `list_contexts_by_creator(creator_address)`
+   - `transfer_ownership(context_id, new_owner)`
+
+**Data Structure**:
+```python
+# Context struct should contain:
+# - creator_address
+# - ipfs_hash
+# - title (max 64 chars)
+# - description (max 256 chars)
+# - category (enum: prompt, dataset, model_config, tool)
+# - model_type (enum: gpt, claude, llama, universal)
+# - version_number
+# - creation_timestamp
+# - last_updated
+# - total_purchases
+# - rating_sum
+# - rating_count
+# - is_active
+```
+
+**Implementation Guidelines**:
+- Use Algorand box storage for storing context metadata
+- Implement version control by creating new entries linked to parent
+- Add events for context creation and updates
+- Include access control checks for updates
+- Optimize storage to minimize transaction costs
+
+### Step 1.2: License Manager Contract
+**Objective**: Handle licensing, payments, and access control.
+
+**Requirements**:
+1. Create contract at `smart_contracts/license_manager/contract.py`
+2. Implement licensing methods:
+   - `create_license_type(context_id, license_type, price, duration, usage_limit)`
+   - `purchase_license(context_id, license_type_id, payment_amount)`
+   - `check_license_validity(user_address, context_id)`
+   - `revoke_license(license_id, reason)`
+   - `distribute_royalties(context_id)`
+
+**License Types**:
+```python
+# License types to support:
+# - one_time_purchase (permanent access)
+# - subscription (time-based access)
+# - usage_based (API call limits)
+# - commercial (special terms)
+```
+
+**Payment Flow**:
+- Accept ALGO or custom tokens
+- Automatically distribute: 97.5% to creator, 2.5% to platform
+- Handle refunds within grace period
+- Track all transactions for analytics
+
+### Step 1.3: Governance Token Contract
+**Objective**: Implement platform governance and staking.
+
+**Requirements**:
+1. Create ASA (Algorand Standard Asset) for governance token
+2. Implement at `smart_contracts/governance_token/contract.py`:
+   - `create_proposal(title, description, action_type, parameters)`
+   - `vote_on_proposal(proposal_id, vote_choice, token_amount)`
+   - `execute_proposal(proposal_id)`
+   - `stake_tokens(amount, duration)`
+   - `claim_staking_rewards()`
+
+**Governance Features**:
+- Minimum token holding for proposal creation
+- Quadratic voting option
+- Time-locked voting periods
+- Automatic execution of passed proposals
+
+## Module 2: IPFS Integration Layer
+
+### Step 2.1: IPFS Service Setup
+**Objective**: Create reliable IPFS integration for storing AI contexts.
+
+**Requirements**:
+1. Create `src/services/ipfs.service.ts` in frontend
+2. Implement core functions:
+   ```typescript
+   interface IPFSService {
+     uploadContext(data: ContextData): Promise<string>; // returns IPFS hash
+     retrieveContext(ipfsHash: string): Promise<ContextData>;
+     pinContext(ipfsHash: string): Promise<boolean>;
+     encryptContext(data: ContextData, key: string): Promise<EncryptedData>;
+     decryptContext(encryptedData: EncryptedData, key: string): Promise<ContextData>;
+   }
+   ```
+
+**Implementation Details**:
+- Use Pinata or Infura for IPFS pinning
+- Implement chunking for large contexts
+- Add retry logic for failed uploads
+- Cache frequently accessed contexts locally
+- Implement encryption for premium contexts
+
+### Step 2.2: Context Data Standards
+**Objective**: Define standardized format for AI contexts.
+
+**Create TypeScript interfaces**:
+```typescript
+interface AIContext {
+  version: "1.0";
+  metadata: {
+    title: string;
+    description: string;
+    author: string;
+    created: Date;
+    tags: string[];
+    modelCompatibility: ModelType[];
+  };
+  content: {
+    systemPrompt?: string;
+    examples?: Example[];
+    parameters?: ModelParameters;
+    tools?: ToolDefinition[];
+    datasets?: DatasetReference[];
+  };
+  licensing: {
+    type: LicenseType;
+    terms: string;
+    commercialUse: boolean;
+  };
+}
+```
+
+## Module 3: Frontend Development
+
+### Step 3.1: Core Components Architecture
+**Objective**: Build reusable React components.
+
+**Component Hierarchy**:
+```
+1. Layout Components (src/components/common/):
+   - Create AppLayout with header, sidebar, main content area
+   - Implement responsive navigation
+   - Add notification system for transactions
+
+2. Context Management (src/components/context/):
+   - ContextUploadForm: Multi-step form for creating contexts
+   - ContextEditor: Monaco editor integration for code/prompt editing
+   - ContextPreview: Real-time preview of context rendering
+   - VersionComparison: Diff view for context versions
+
+3. Marketplace Components (src/components/marketplace/):
+   - ContextGrid: Card-based grid with pagination
+   - AdvancedSearch: Filters for category, model, price, rating
+   - QuickPreview: Modal for testing contexts before purchase
+   - PurchaseFlow: Step-by-step purchase wizard
+```
+
+### Step 3.2: State Management
+**Objective**: Implement Redux store for application state.
+
+**Store Structure**:
+```typescript
+// src/store/slices/context.slice.ts
+interface ContextState {
+  userContexts: Context[];
+  marketplaceContexts: Context[];
+  selectedContext: Context | null;
+  filters: FilterOptions;
+  loading: boolean;
+  error: string | null;
+}
+
+// Implement actions:
+// - fetchUserContexts
+// - fetchMarketplaceContexts
+// - createContext
+// - updateContext
+// - purchaseContext
+// - rateContext
+```
+
+### Step 3.3: Algorand Integration
+**Objective**: Connect frontend with Algorand blockchain.
+
+**Implementation Steps**:
+1. Create `src/hooks/useAlgorand.ts`:
+   ```typescript
+   const useAlgorand = () => {
+     // Wallet connection logic
+     // Transaction signing
+     // Account balance checking
+     // Contract interaction methods
+   };
+   ```
+
+2. Implement wallet providers:
+   - Pera Wallet integration
+   - MyAlgo Connect
+   - WalletConnect support
+   - Ledger hardware wallet
+
+3. Transaction handlers:
+   - Show loading states during transactions
+   - Handle errors gracefully
+   - Provide transaction links to AlgoExplorer
+
+## Module 4: API Development (Optional Backend)
+
+### Step 4.1: REST API Design
+**Objective**: Create backend API for enhanced features.
+
+**Endpoints to implement**:
+```
+POST   /api/contexts/search        - Advanced search with filters
+GET    /api/contexts/trending      - Trending contexts
+GET    /api/contexts/{id}/analytics - Usage analytics
+POST   /api/contexts/validate      - AI-powered validation
+GET    /api/users/{address}/stats  - User statistics
+POST   /api/ipfs/pin              - Backup pinning service
+```
+
+### Step 4.2: Caching Layer
+**Objective**: Implement Redis caching for performance.
+
+**Cache Strategy**:
+- Cache popular contexts for 1 hour
+- Cache user sessions for 24 hours
+- Implement cache invalidation on updates
+- Use CDN for static context assets
+
+## Module 5: Testing Strategy
+
+### Step 5.1: Smart Contract Testing
+**Objective**: Comprehensive test coverage for contracts.
+
+**Test Scenarios**:
+```python
+# tests/test_context_registry.py
+def test_create_context_success():
+    # Test successful context creation
+    
+def test_create_context_invalid_metadata():
+    # Test validation of metadata
+    
+def test_update_context_permissions():
+    # Test only owner can update
+    
+def test_version_control_flow():
+    # Test version creation and linking
+```
+
+### Step 5.2: Frontend Testing
+**Objective**: Ensure UI reliability.
+
+**Testing Approach**:
+1. Unit tests for utilities and helpers
+2. Component testing with React Testing Library
+3. Integration tests for wallet connections
+4. E2E tests for critical user flows
+
+## Module 6: Security Implementation
+
+### Step 6.1: Smart Contract Security
+**Security Checklist**:
+- [ ] Implement reentrancy guards
+- [ ] Add integer overflow checks
+- [ ] Validate all inputs
+- [ ] Use time locks for critical operations
+- [ ] Implement emergency pause
+- [ ] Add multi-sig for admin functions
+
+### Step 6.2: Frontend Security
+**Security Measures**:
+- [ ] Implement CSP headers
+- [ ] Sanitize user inputs
+- [ ] Use HTTPS everywhere
+- [ ] Implement rate limiting
+- [ ] Add wallet signature verification
+- [ ] Secure key management
+
+## Module 7: Deployment Pipeline
+
+### Step 7.1: Smart Contract Deployment
+**Deployment Script** (`scripts/deploy.py`):
+```python
+# 1. Deploy governance token
+# 2. Deploy context registry
+# 3. Deploy license manager
+# 4. Configure contract permissions
+# 5. Transfer ownership to multisig
+# 6. Verify on explorer
+```
+
+### Step 7.2: Frontend Deployment
+**CI/CD Pipeline**:
+1. Build optimization with Vite
+2. Deploy to IPFS for decentralization
+3. Configure ENS/Algorand naming service
+4. Set up monitoring and analytics
+
+## Module 8: Documentation
+
+### Step 8.1: Technical Documentation
+**Create comprehensive docs**:
+1. `docs/API.md` - API reference
+2. `docs/SMART_CONTRACTS.md` - Contract interfaces
+3. `docs/INTEGRATION_GUIDE.md` - SDK usage
+4. `docs/SECURITY.md` - Security best practices
+
+### Step 8.2: User Documentation
+**User-facing docs**:
+1. Getting started guide
+2. Video tutorials
+3. FAQ section
+4. Troubleshooting guide
+
+## Implementation Order
+
+**Phase 1 (Weeks 1-2)**: Smart Contract Foundation
+- Implement basic context registry
+- Deploy to testnet
+- Basic contract tests
+
+**Phase 2 (Weeks 3-4)**: IPFS Integration
+- Set up IPFS service
+- Implement upload/retrieve
+- Test with sample contexts
+
+**Phase 3 (Weeks 5-6)**: Frontend Core
+- Basic UI components
+- Wallet integration
+- Context creation flow
+
+**Phase 4 (Weeks 7-8)**: Marketplace Features
+- Browse and search
+- Purchase flow
+- License management
+
+**Phase 5 (Weeks 9-10)**: Advanced Features
+- Analytics dashboard
+- Governance implementation
+- API development
+
+**Phase 6 (Weeks 11-12)**: Polish and Deploy
+- Security audit
+- Performance optimization
+- Mainnet deployment
+
+## Success Criteria
+
+After each module, verify:
+1. All tests pass with >80% coverage
+2. No critical security vulnerabilities
+3. Performance meets benchmarks (<3s page load)
+4. User flows work end-to-end
+5. Documentation is complete and accurate
+
+## Additional Context for AI
+
+When implementing each module:
+- Prioritize user experience and simplicity
+- Follow Algorand best practices
+- Ensure mobile responsiveness
+- Implement proper error handling
+- Add comprehensive logging
+- Consider gas optimization
+- Plan for scalability from day one
+
+Remember to regularly commit code, document decisions, and maintain clean code architecture throughout the development process.

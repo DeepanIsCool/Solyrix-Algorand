@@ -1,0 +1,118 @@
+#pragma version 10
+#pragma typetrack false
+
+// algopy.arc4.ARC4Contract.approval_program() -> uint64:
+main:
+    intcblock 1
+    // smart_contracts/context_registry/contract.py:5
+    // class ContextRegistry(ARC4Contract):
+    txn NumAppArgs
+    bz main_bare_routing@9
+    pushbytess 0x130f91fc 0xd97d7f21 0x620bbae0 0xe29749f8 // method "create_context(string,string,uint64)string", method "get_context_price(string)uint64", method "purchase_context(string)string", method "get_platform_fee_percentage()uint64"
+    txna ApplicationArgs 0
+    match main_create_context_route@3 main_get_context_price_route@4 main_purchase_context_route@5 main_get_platform_fee_percentage_route@6
+
+main_after_if_else@13:
+    // smart_contracts/context_registry/contract.py:5
+    // class ContextRegistry(ARC4Contract):
+    pushint 0 // 0
+    return
+
+main_get_platform_fee_percentage_route@6:
+    // smart_contracts/context_registry/contract.py:33
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c7500000000000000fa
+    log
+    intc_0 // 1
+    return
+
+main_purchase_context_route@5:
+    // smart_contracts/context_registry/contract.py:28
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c75001070757263686173655f73756363657373
+    log
+    intc_0 // 1
+    return
+
+main_get_context_price_route@4:
+    // smart_contracts/context_registry/contract.py:23
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c750000000000001388
+    log
+    intc_0 // 1
+    return
+
+main_create_context_route@3:
+    // smart_contracts/context_registry/contract.py:8
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/context_registry/contract.py:5
+    // class ContextRegistry(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    txna ApplicationArgs 3
+    btoi
+    // smart_contracts/context_registry/contract.py:8
+    // @abimethod()
+    callsub create_context
+    pushbytes 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return
+
+main_bare_routing@9:
+    // smart_contracts/context_registry/contract.py:5
+    // class ContextRegistry(ARC4Contract):
+    txn OnCompletion
+    bnz main_after_if_else@13
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_0 // 1
+    return
+
+
+// smart_contracts.context_registry.contract.ContextRegistry.create_context(ipfs_hash: bytes, title: bytes, price: uint64) -> bytes:
+create_context:
+    // smart_contracts/context_registry/contract.py:8-14
+    // @abimethod()
+    // def create_context(
+    //     self,
+    //     ipfs_hash: String,
+    //     title: String,
+    //     price: UInt64
+    // ) -> String:
+    proto 3 1
+    // smart_contracts/context_registry/contract.py:17-18
+    // # Basic validation
+    // assert price >= UInt64(1000), "Price too low"
+    frame_dig -1
+    pushint 1000 // 1000
+    >=
+    assert // Price too low
+    // smart_contracts/context_registry/contract.py:20-21
+    // # Return a simple context ID
+    // return String("ctx_created")
+    pushbytes 0x000b6374785f63726561746564
+    retsub

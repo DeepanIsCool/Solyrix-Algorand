@@ -1,0 +1,119 @@
+#pragma version 10
+#pragma typetrack false
+
+// algopy.arc4.ARC4Contract.approval_program() -> uint64:
+main:
+    intcblock 1
+    // smart_contracts/license_manager/contract.py:5
+    // class LicenseManager(ARC4Contract):
+    txn NumAppArgs
+    bz main_bare_routing@9
+    pushbytess 0x8466b82e 0xa2ae36a4 0x810ab22c 0xe29749f8 // method "create_license(string,uint64,uint64)string", method "purchase_license(string)string", method "get_license_price(string)uint64", method "get_platform_fee_percentage()uint64"
+    txna ApplicationArgs 0
+    match main_create_license_route@3 main_purchase_license_route@4 main_get_license_price_route@5 main_get_platform_fee_percentage_route@6
+
+main_after_if_else@13:
+    // smart_contracts/license_manager/contract.py:5
+    // class LicenseManager(ARC4Contract):
+    pushint 0 // 0
+    return
+
+main_get_platform_fee_percentage_route@6:
+    // smart_contracts/license_manager/contract.py:33
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c7500000000000000fa
+    log
+    intc_0 // 1
+    return
+
+main_get_license_price_route@5:
+    // smart_contracts/license_manager/contract.py:28
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c750000000000000bb8
+    log
+    intc_0 // 1
+    return
+
+main_purchase_license_route@4:
+    // smart_contracts/license_manager/contract.py:23
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c7500116c6963656e73655f707572636861736564
+    log
+    intc_0 // 1
+    return
+
+main_create_license_route@3:
+    // smart_contracts/license_manager/contract.py:8
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/license_manager/contract.py:5
+    // class LicenseManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    btoi
+    txna ApplicationArgs 3
+    btoi
+    // smart_contracts/license_manager/contract.py:8
+    // @abimethod()
+    callsub create_license
+    pushbytes 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return
+
+main_bare_routing@9:
+    // smart_contracts/license_manager/contract.py:5
+    // class LicenseManager(ARC4Contract):
+    txn OnCompletion
+    bnz main_after_if_else@13
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_0 // 1
+    return
+
+
+// smart_contracts.license_manager.contract.LicenseManager.create_license(context_id: bytes, license_type: uint64, price: uint64) -> bytes:
+create_license:
+    // smart_contracts/license_manager/contract.py:8-14
+    // @abimethod()
+    // def create_license(
+    //     self,
+    //     context_id: String,
+    //     license_type: UInt64,
+    //     price: UInt64
+    // ) -> String:
+    proto 3 1
+    // smart_contracts/license_manager/contract.py:17-18
+    // # Basic validation
+    // assert price >= UInt64(1000), "Price too low"
+    frame_dig -1
+    pushint 1000 // 1000
+    >=
+    assert // Price too low
+    // smart_contracts/license_manager/contract.py:20-21
+    // # Return a simple license ID
+    // return String("lic_created")
+    pushbytes 0x000b6c69635f63726561746564
+    retsub

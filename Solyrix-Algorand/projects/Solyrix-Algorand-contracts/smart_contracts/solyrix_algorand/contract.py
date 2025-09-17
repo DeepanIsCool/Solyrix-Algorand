@@ -1,5 +1,5 @@
-from algopy import ARC4Contract, String
-from algopy.arc4 import abimethod
+from algopy import ARC4Contract
+from algopy.arc4 import abimethod, String
 
 
 class SolyrixAlgorand(ARC4Contract):

@@ -1,0 +1,535 @@
+{
+  "version": 3,
+  "sources": [
+    "../../license_manager/contract.py"
+  ],
+  "mappings": ";;;;AAIA;;AAAA;;;AAAA;;;;;;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;;;AAAA;;;AA4BK;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;;AALA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;;AALA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;;AAfA;;AAAA;AAAA;AAAA;;AAAA;AAHL;;;AAAA;;;AAAA;AAAA;;;AAAA;AAGK;;;AAAA;;;;;;AAAA;AAAA;AAAA;AAAA;;AAHL;;AAAA;;;;;;;;;AAGA;;;AAUe;;AAAS;;;AAAT;AAAP;AAGO;;;;;;;;;;;;;;;AAAP",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "algopy.arc4.ARC4Contract.approval_program",
+      "params": {},
+      "block": "main",
+      "stack_in": [],
+      "op": "intcblock 1"
+    },
+    "4": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "6": {
+      "op": "bz main_bare_routing@9",
+      "stack_out": []
+    },
+    "9": {
+      "op": "pushbytess 0x8466b82e 0xa2ae36a4 0x810ab22c 0xe29749f8 // method \"create_license(string,uint64,uint64)string\", method \"purchase_license(string)string\", method \"get_license_price(string)uint64\", method \"get_platform_fee_percentage()uint64\"",
+      "defined_out": [
+        "Method(create_license(string,uint64,uint64)string)",
+        "Method(get_license_price(string)uint64)",
+        "Method(get_platform_fee_percentage()uint64)",
+        "Method(purchase_license(string)string)"
+      ],
+      "stack_out": [
+        "Method(create_license(string,uint64,uint64)string)",
+        "Method(purchase_license(string)string)",
+        "Method(get_license_price(string)uint64)",
+        "Method(get_platform_fee_percentage()uint64)"
+      ]
+    },
+    "31": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(create_license(string,uint64,uint64)string)",
+        "Method(get_license_price(string)uint64)",
+        "Method(get_platform_fee_percentage()uint64)",
+        "Method(purchase_license(string)string)",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "Method(create_license(string,uint64,uint64)string)",
+        "Method(purchase_license(string)string)",
+        "Method(get_license_price(string)uint64)",
+        "Method(get_platform_fee_percentage()uint64)",
+        "tmp%2#0"
+      ]
+    },
+    "34": {
+      "op": "match main_create_license_route@3 main_purchase_license_route@4 main_get_license_price_route@5 main_get_platform_fee_percentage_route@6",
+      "stack_out": []
+    },
+    "44": {
+      "block": "main_after_if_else@13",
+      "stack_in": [],
+      "op": "pushint 0 // 0",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "46": {
+      "op": "return",
+      "stack_out": []
+    },
+    "47": {
+      "block": "main_get_platform_fee_percentage_route@6",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%25#0"
+      ],
+      "stack_out": [
+        "tmp%25#0"
+      ]
+    },
+    "49": {
+      "op": "!",
+      "defined_out": [
+        "tmp%26#0"
+      ],
+      "stack_out": [
+        "tmp%26#0"
+      ]
+    },
+    "50": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "51": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%27#0"
+      ],
+      "stack_out": [
+        "tmp%27#0"
+      ]
+    },
+    "53": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "54": {
+      "op": "pushbytes 0x151f7c7500000000000000fa",
+      "defined_out": [
+        "0x151f7c7500000000000000fa"
+      ],
+      "stack_out": [
+        "0x151f7c7500000000000000fa"
+      ]
+    },
+    "68": {
+      "op": "log",
+      "stack_out": []
+    },
+    "69": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "70": {
+      "op": "return",
+      "stack_out": []
+    },
+    "71": {
+      "block": "main_get_license_price_route@5",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "tmp%19#0"
+      ]
+    },
+    "73": {
+      "op": "!",
+      "defined_out": [
+        "tmp%20#0"
+      ],
+      "stack_out": [
+        "tmp%20#0"
+      ]
+    },
+    "74": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "75": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%21#0"
+      ],
+      "stack_out": [
+        "tmp%21#0"
+      ]
+    },
+    "77": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "78": {
+      "op": "pushbytes 0x151f7c750000000000000bb8",
+      "defined_out": [
+        "0x151f7c750000000000000bb8"
+      ],
+      "stack_out": [
+        "0x151f7c750000000000000bb8"
+      ]
+    },
+    "92": {
+      "op": "log",
+      "stack_out": []
+    },
+    "93": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "94": {
+      "op": "return",
+      "stack_out": []
+    },
+    "95": {
+      "block": "main_purchase_license_route@4",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "tmp%12#0"
+      ]
+    },
+    "97": {
+      "op": "!",
+      "defined_out": [
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "tmp%13#0"
+      ]
+    },
+    "98": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "99": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "tmp%14#0"
+      ]
+    },
+    "101": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "102": {
+      "op": "pushbytes 0x151f7c7500116c6963656e73655f707572636861736564",
+      "defined_out": [
+        "0x151f7c7500116c6963656e73655f707572636861736564"
+      ],
+      "stack_out": [
+        "0x151f7c7500116c6963656e73655f707572636861736564"
+      ]
+    },
+    "127": {
+      "op": "log",
+      "stack_out": []
+    },
+    "128": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "129": {
+      "op": "return",
+      "stack_out": []
+    },
+    "130": {
+      "block": "main_create_license_route@3",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "132": {
+      "op": "!",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "133": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "134": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "tmp%5#0"
+      ]
+    },
+    "136": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "137": {
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "140": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "reinterpret_bytes[8]%0#0",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0",
+        "reinterpret_bytes[8]%0#0"
+      ]
+    },
+    "143": {
+      "op": "btoi",
+      "defined_out": [
+        "tmp%7#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%7#0",
+        "tmp%8#0"
+      ]
+    },
+    "144": {
+      "op": "txna ApplicationArgs 3",
+      "defined_out": [
+        "reinterpret_bytes[8]%1#0",
+        "tmp%7#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%7#0",
+        "tmp%8#0",
+        "reinterpret_bytes[8]%1#0"
+      ]
+    },
+    "147": {
+      "op": "btoi",
+      "defined_out": [
+        "tmp%7#0",
+        "tmp%8#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%7#0",
+        "tmp%8#0",
+        "tmp%9#0"
+      ]
+    },
+    "148": {
+      "callsub": "smart_contracts.license_manager.contract.LicenseManager.create_license",
+      "op": "callsub create_license",
+      "defined_out": [
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0"
+      ]
+    },
+    "151": {
+      "op": "pushbytes 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "0x151f7c75"
+      ]
+    },
+    "157": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "tmp%10#0"
+      ]
+    },
+    "158": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "159": {
+      "op": "log",
+      "stack_out": []
+    },
+    "160": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "161": {
+      "op": "return",
+      "stack_out": []
+    },
+    "162": {
+      "block": "main_bare_routing@9",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%30#0"
+      ],
+      "stack_out": [
+        "tmp%30#0"
+      ]
+    },
+    "164": {
+      "op": "bnz main_after_if_else@13",
+      "stack_out": []
+    },
+    "167": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%31#0"
+      ],
+      "stack_out": [
+        "tmp%31#0"
+      ]
+    },
+    "169": {
+      "op": "!",
+      "defined_out": [
+        "tmp%32#0"
+      ],
+      "stack_out": [
+        "tmp%32#0"
+      ]
+    },
+    "170": {
+      "error": "can only call when creating",
+      "op": "assert // can only call when creating",
+      "stack_out": []
+    },
+    "171": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "172": {
+      "op": "return",
+      "stack_out": []
+    },
+    "173": {
+      "subroutine": "smart_contracts.license_manager.contract.LicenseManager.create_license",
+      "params": {
+        "context_id#0": "bytes",
+        "license_type#0": "uint64",
+        "price#0": "uint64"
+      },
+      "block": "create_license",
+      "stack_in": [],
+      "op": "proto 3 1"
+    },
+    "176": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "price#0 (copy)"
+      ],
+      "stack_out": [
+        "price#0 (copy)"
+      ]
+    },
+    "178": {
+      "op": "pushint 1000 // 1000",
+      "defined_out": [
+        "1000",
+        "price#0 (copy)"
+      ],
+      "stack_out": [
+        "price#0 (copy)",
+        "1000"
+      ]
+    },
+    "181": {
+      "op": ">=",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "182": {
+      "error": "Price too low",
+      "op": "assert // Price too low",
+      "stack_out": []
+    },
+    "183": {
+      "op": "pushbytes 0x000b6c69635f63726561746564",
+      "defined_out": [
+        "0x000b6c69635f63726561746564"
+      ],
+      "stack_out": [
+        "0x000b6c69635f63726561746564"
+      ]
+    },
+    "198": {
+      "retsub": true,
+      "op": "retsub"
+    }
+  }
+}
